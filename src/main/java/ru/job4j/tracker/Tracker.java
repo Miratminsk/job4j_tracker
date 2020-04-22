@@ -16,6 +16,7 @@ public class Tracker {
 
     /**
      * Метод реализующий добавление заявки в хранилище
+     *
      * @param item новая заявка
      */
     public Item add(Item item) {
@@ -68,21 +69,49 @@ public class Tracker {
     }
 
     /**
-     * @param id to find
+     * @param id to find Item
      * @return Item if id is matched.
      */
     public Item findById(String id) {
-        for (Item name : this.items) {
-            if (name.getId().equals(id)) {
-                return name;
+        int index = indexOf(id);
+        return index != -1 ? items[index] : null;
+    }
+
+    /**
+     * @param id to find Item
+     * @return int index of Item or -1 if not found.
+     */
+    private int indexOf(String id) {
+        int rsl = -1;
+        for (int index = 0; index < position; index++) {
+            if (items[index].getId().equals(id)) {
+                rsl = index;
+                break;
             }
         }
-        return null;
+        return rsl;
+    }
+
+    /**
+     * @param id to find item
+     * @param newItem to replace new Item
+     * @return true if replaced successfully or false if not.
+     */
+    public boolean replace(String id, Item newItem) {
+        int indexOfItem = indexOf(id);
+        if (indexOfItem >= 0) {
+            newItem.setId(items[indexOfItem].getId());
+            items[indexOfItem] = newItem;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
      * Метод генерирует уникальный ключ для заявки.
      * Так как у заявки нет уникальности полей, имени и описание. Для идентификации нам нужен уникальный ключ.
+     *
      * @return Уникальный ключ.
      */
     private String generateId() {
