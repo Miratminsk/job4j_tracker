@@ -1,29 +1,92 @@
 package ru.job4j.tracker;
 
+import java.util.Arrays;
+import java.util.Random;
+
 public class Tracker {
-//    private final Item[] items = new Item[100];
-//    private int ids = 1;
-//    private int size = 0;
-//
-//    public Item add(Item item) {
-//        item.setId(generateId());
-//        items[size++] = item;
-//        return item;
-//    }
-//
-//    private String generateId() {
-//        return String.valueOf(ids++);
-//    }
-//
-//    public Item findById(String id) {
-//        Item rsl = null;
-//        for (int index = 0; index < size; index++) {
-//            Item item = items[index];
-//            if (item.getId().equals(id)) {
-//                rsl = item;
-//                break;
-//            }
-//        }
-//        return rsl;
-//    }
+    /**
+     * Массив для хранение заявок.
+     */
+    private final Item[] items = new Item[100];
+
+    /**
+     * Указатель ячейки для новой заявки.
+     */
+    private int position = 0;
+
+    /**
+     * Метод реализующий добавление заявки в хранилище
+     * @param item новая заявка
+     */
+    public Item add(Item item) {
+        item.setId(generateId());
+        this.items[position++] = item;
+        return item;
+    }
+
+    /**
+     * @return Copy of this.item without null.
+     */
+    public Item[] findAll() {
+        Item[] namesWithoutNull = new Item[this.items.length];
+        int size = 0;
+        for (int index = 0; index < this.items.length; index++) {
+            Item name = this.items[index];
+            if (name != null) {
+                namesWithoutNull[size] = name;
+                size++;
+            }
+        }
+        namesWithoutNull = Arrays.copyOf(namesWithoutNull, size);
+        for (int index = 0; index < namesWithoutNull.length; index++) {
+            System.out.println(namesWithoutNull[index]);
+        }
+        return namesWithoutNull;
+    }
+
+    /**
+     * @param findName name to find
+     * @return Copy of this.item with names if found.
+     */
+    public Item[] findByName(String findName) {
+        Item[] foundNames = new Item[this.items.length];
+        int size = 0;
+        for (int index = 0; index < this.items.length; index++) {
+            Item name = this.items[index];
+            if (name != null) {
+                if (name.getName().equals(findName)) {
+                    foundNames[size] = name;
+                    size++;
+                }
+            }
+        }
+        foundNames = Arrays.copyOf(foundNames, size);
+        for (int index = 0; index < foundNames.length; index++) {
+            System.out.println(foundNames[index]);
+        }
+        return foundNames;
+    }
+
+    /**
+     * @param id to find
+     * @return Item if id is matched.
+     */
+    public Item findById(String id) {
+        for (Item name : this.items) {
+            if (name.getId().equals(id)) {
+                return name;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Метод генерирует уникальный ключ для заявки.
+     * Так как у заявки нет уникальности полей, имени и описание. Для идентификации нам нужен уникальный ключ.
+     * @return Уникальный ключ.
+     */
+    private String generateId() {
+        Random rm = new Random();
+        return String.valueOf(rm.nextLong() + System.currentTimeMillis());
+    }
 }
