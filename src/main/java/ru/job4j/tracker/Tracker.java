@@ -40,7 +40,7 @@ public class Tracker {
         }
         namesWithoutNull = Arrays.copyOf(namesWithoutNull, size);
         for (int index = 0; index < namesWithoutNull.length; index++) {
-            System.out.println(namesWithoutNull[index]);
+            System.out.println(index + 1 + ". " + items[index].getName() + " " + items[index].getId());
         }
         return namesWithoutNull;
     }
@@ -63,7 +63,7 @@ public class Tracker {
         }
         foundNames = Arrays.copyOf(foundNames, size);
         for (int index = 0; index < foundNames.length; index++) {
-            System.out.println(foundNames[index]);
+            System.out.println(index + 1 + ". " + items[index].getName());
         }
         return foundNames;
     }
