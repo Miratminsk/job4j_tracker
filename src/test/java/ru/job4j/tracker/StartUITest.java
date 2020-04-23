@@ -32,4 +32,26 @@ public class StartUITest {
         assertThat(created1.getName(), is(expected1.getName()));
         assertThat(created2.getName(), is(expected2.getName()));
     }
+
+    @Test
+    public void whenEditItem() {
+        Tracker tracker = new Tracker();
+        Item item = new Item("Mirat");
+        tracker.add(item);
+        String[] answers = {"Mirat", "Anna"};
+        StartUI.editItem(new StubInput(answers), tracker);
+        Item replaced = tracker.findById(item.getId());
+        assertThat(replaced.getName(), is("Anna"));
+    }
+
+    @Test
+    public void whenDeleteItem() {
+        Tracker tracker = new Tracker();
+        Item item = new Item("Mirat");
+        tracker.add(item);
+        String[] answers = {"Mirat"};
+        StartUI.deleteItem(new StubInput(answers), tracker);
+        Item[] expected = tracker.findByName("Mirat");
+        assertNull(expected);
+    }
 }

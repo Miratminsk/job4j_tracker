@@ -65,7 +65,11 @@ public class Tracker {
         for (int index = 0; index < foundNames.length; index++) {
             System.out.println(index + 1 + ". " + items[index].getName());
         }
-        return foundNames;
+        if (foundNames.length == 0) {
+            return null;
+        } else {
+            return foundNames;
+        }
     }
 
     /**
