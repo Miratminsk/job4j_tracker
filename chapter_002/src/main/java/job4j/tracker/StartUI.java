@@ -2,12 +2,6 @@ package job4j.tracker;
 
 public class StartUI {
 
-    public static void findItemByName(Input input, Tracker tracker) {
-        System.out.println("=== Find item by name ====");
-        String name = input.askStr("Enter name: ");
-        tracker.findByName(name);
-    }
-
     public void init(Input input, Tracker tracker, UserAction[] actions) {
         boolean run = true;
         while (run) {
