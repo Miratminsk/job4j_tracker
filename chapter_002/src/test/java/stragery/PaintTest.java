@@ -1,5 +1,7 @@
 package stragery;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -11,46 +13,21 @@ import static org.junit.Assert.*;
 
 public class PaintTest {
 
-    @Test
-    public void whenDrawSquare() {
-        Square square = new Square();
-        assertThat(
-                square.draw(),
-                is(
-                        new StringJoiner(System.lineSeparator())
-                                .add("+++++")
-                                .add("+   +")
-                                .add("+   +")
-                                .add("+++++")
-                                .toString()
-                )
-        );
+    private final PrintStream stdout = System.out;
+    private final ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+    @Before
+    public void loadOutput() {
+        System.setOut(new PrintStream(this.out));
     }
 
-    @Test
-    public void whenDrawTriangle() {
-        Triangle triangle = new Triangle();
-        assertThat(
-                triangle.draw(),
-                is(
-                        new StringJoiner(System.lineSeparator())
-                                .add("  +  ")
-                                .add(" +++ ")
-                                .add("+++++")
-                                .toString()
-                )
-        );
+    @After
+    public void backOutput() {
+        System.setOut(this.stdout);
     }
 
     @Test
     public void whenPrint() {
-        // получаем ссылку на стандартный вывод в консоль.
-        PrintStream stdout = System.out;
-        // Создаем буфур для хранения вывода.
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        //Заменяем стандартный вывод на вывод в пямять для тестирования.
-        System.setOut(new PrintStream(out));
-        // выполняем действия пишушиее в консоль.
         new Paint().draw(new Square());
         // проверяем результат вычисления
         assertThat(
@@ -65,15 +42,10 @@ public class PaintTest {
                                 .toString()
                 )
         );
-        // возвращаем обратно стандартный вывод в консоль.
-        System.setOut(stdout);
     }
 
     @Test
     public void whenPrintTriange() {
-        PrintStream stdout = System.out;
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
         new Paint().draw(new Triangle());
         assertThat(
                 new String(out.toByteArray()),
@@ -86,7 +58,6 @@ public class PaintTest {
                                 .toString()
                 )
         );
-        System.setOut(stdout);
     }
 
 
