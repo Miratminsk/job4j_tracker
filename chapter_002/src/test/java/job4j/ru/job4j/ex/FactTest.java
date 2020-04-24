@@ -1,5 +1,6 @@
 package job4j.ru.job4j.ex;
 
+import job4j.ex.Fact;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
