@@ -2,6 +2,10 @@ package job4j.tracker;
 
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.StringJoiner;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.*;
 
@@ -67,5 +71,66 @@ public class StartUITest {
         StubAction action = new StubAction();
         new StartUI().init(input, new Tracker(), new UserAction[] { action });
         assertThat(action.isCall(), is(true));
+    }
+
+    @Test
+    public void whenFindAllActionTest() {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PrintStream def = System.out;
+        System.setOut(new PrintStream(out));
+        Tracker tracker = new Tracker();
+        Item item = new Item("fix bug");
+        tracker.add(item);
+        FindAllAction act = new FindAllAction();
+        act.execute(new StubInput(new String[] {}), tracker);
+        String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
+                .add(1 + ". " + item.getName() + " " + item.getId())
+                .toString();
+        assertThat(new String(out.toByteArray()), is(expect));
+        System.setOut(def);
+    }
+
+    @Test
+    public void whenFindByNameActionTest() {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PrintStream def = System.out;
+        System.setOut(new PrintStream(out));
+        Tracker tracker = new Tracker();
+        Item item = new Item("Mirat");
+        tracker.add(item);
+        FindByNameAction findByNameAction = new FindByNameAction();
+        findByNameAction.execute(new StubInput(new String[] {"Mirat"}), tracker);
+        String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
+                .add(1 + ". " + item.getName())
+                .toString();
+        assertThat(new String(out.toByteArray()), is(expect));
+        System.setOut(def);
+    }
+
+    @Test
+    public void whenShowMenuTest() {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        PrintStream def = System.out;
+        System.setOut(new PrintStream(out));
+        UserAction[] actions = {
+                new CreateAction(),
+                new FindAllAction(),
+                new EditAction(),
+                new DeleteAction(),
+                new FindByIdAction(),
+                new FindByNameAction()
+        };
+        new StartUI().showMenu(actions);
+        String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
+                .add("Menu.")
+                .add(0 + ". === Create a new Item ====")
+                .add(1 + ". === Show all items ====")
+                .add(2 + ". === Edit item ====")
+                .add(3 + ". === Delete item ====")
+                .add(4 + ". === Find item by Id ====")
+                .add(5 + ". === Find item by name ====")
+                .toString();
+        assertThat(new String(out.toByteArray()), is(expect));
+        System.setOut(def);
     }
 }
