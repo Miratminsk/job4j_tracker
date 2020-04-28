@@ -2,7 +2,7 @@ package job4j.tracker;
 
 import java.util.Objects;
 
-public class Item {
+public class Item implements Comparable<Item> {
     private String id;
     private String name;
 
@@ -24,5 +24,15 @@ public class Item {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public int compareTo(Item anotherItem) {
+        return name.compareTo(anotherItem.name);
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

@@ -2,8 +2,14 @@ package job4j.tracker;
 
         import org.junit.Test;
 
+        import java.util.ArrayList;
+        import java.util.Arrays;
+        import java.util.Collections;
+        import java.util.List;
+
         import static org.hamcrest.Matchers.is;
         import static org.hamcrest.core.IsNull.nullValue;
+        import static org.junit.Assert.assertEquals;
         import static org.junit.Assert.assertThat;
 
 public class TrackerTest {
@@ -100,5 +106,37 @@ public class TrackerTest {
         assertThat(result[0].getName(), is("test1"));
         assertThat(result[1].getName(), is("test3"));
         assertThat(result.length, is(2));
+    }
+
+    @Test
+    public void whenSortUp() {
+        List<Item> items = new ArrayList<>(Arrays.asList(
+                new Item("B"),
+                new Item("A"),
+                new Item("D"),
+                new Item("C")));
+        Collections.sort(items);
+        List<Item> expected = new ArrayList<>(Arrays.asList(
+                new Item("A"),
+                new Item("B"),
+                new Item("C"),
+                new Item("D")));
+        assertEquals(expected.toString(), items.toString());
+    }
+
+    @Test
+    public void whenSortDown() {
+        List<Item> items = new ArrayList<>(Arrays.asList(
+                new Item("B"),
+                new Item("A"),
+                new Item("D"),
+                new Item("C")));
+        Collections.sort(items, new SortDown());
+        List<Item> expected = new ArrayList<>(Arrays.asList(
+                new Item("D"),
+                new Item("C"),
+                new Item("B"),
+                new Item("A")));
+        assertEquals(expected.toString(), items.toString());
     }
 }
